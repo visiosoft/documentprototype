@@ -1,172 +1,224 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>DVS - Home Page</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0078d4; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
-    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #0078d4; z-index: 9999; }
-    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
-    #__bundler_placeholder { color: #999; font-size: 14px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0078d4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #__bundler_loading {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #666;
+      background: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      z-index: 10000;
+    }
+
+    #__bundler_thumbnail {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0078d4;
+      z-index: 9999;
+    }
+
+    #__bundler_thumbnail svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    #__bundler_placeholder {
+      color: #999;
+      font-size: 14px;
+    }
   </style>
   <noscript>
-    <style>#__bundler_loading { display: none; }</style>
-    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+    <style>
+      #__bundler_loading {
+        display: none;
+      }
+    </style>
+    <div
+      style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
       This page requires JavaScript to display.
     </div>
   </noscript>
 </head>
+
 <body>
   <div id="__bundler_thumbnail">
-  <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
-    <rect width="200" height="140" fill="#0078d4"></rect>
-    <rect x="10" y="10" width="180" height="20" rx="2" fill="rgba(255,255,255,0.3)"></rect>
-    <rect x="10" y="38" width="40" height="92" rx="2" fill="rgba(255,255,255,0.15)"></rect>
-    <rect x="56" y="38" width="64" height="26" rx="2" fill="rgba(255,255,255,0.2)"></rect>
-    <rect x="124" y="38" width="66" height="26" rx="2" fill="rgba(255,255,255,0.2)"></rect>
-    <rect x="56" y="68" width="134" height="28" rx="2" fill="rgba(255,255,255,0.15)"></rect>
-    <rect x="56" y="100" width="134" height="28" rx="2" fill="rgba(255,255,255,0.15)"></rect>
-    <text x="100" y="80" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="sans-serif">DVS</text>
-  </svg>
-</div>
+    <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="140" fill="#0078d4"></rect>
+      <rect x="10" y="10" width="180" height="20" rx="2" fill="rgba(255,255,255,0.3)"></rect>
+      <rect x="10" y="38" width="40" height="92" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+      <rect x="56" y="38" width="64" height="26" rx="2" fill="rgba(255,255,255,0.2)"></rect>
+      <rect x="124" y="38" width="66" height="26" rx="2" fill="rgba(255,255,255,0.2)"></rect>
+      <rect x="56" y="68" width="134" height="28" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+      <rect x="56" y="100" width="134" height="28" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+      <text x="100" y="80" text-anchor="middle" fill="white" font-size="10" font-weight="bold"
+        font-family="sans-serif">DVS</text>
+    </svg>
+  </div>
   <div id="__bundler_loading">Unpacking...</div>
 
   <script>
-    
-document.addEventListener('DOMContentLoaded', async function() {
-  const loading = document.getElementById('__bundler_loading');
-  function setStatus(msg) { if (loading) loading.textContent = msg; }
 
-  // Error sink persists across replaceWith since it's on window, not the DOM.
-  window.addEventListener('error', function(e) {
-    var p = document.body || document.documentElement;
-    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
-    d.id = '__bundler_err';
-    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
-    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
-      '[bundle] ' + (e.message || e.type) +
-      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
-  }, true);
+    document.addEventListener('DOMContentLoaded', async function () {
+      const loading = document.getElementById('__bundler_loading');
+      function setStatus(msg) { if (loading) loading.textContent = msg; }
 
-  try {
-    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
-    const templateEl = document.querySelector('script[type="__bundler/template"]');
-    if (!manifestEl || !templateEl) {
-      setStatus('Error: missing bundle data');
-      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
-      return;
-    }
+      // Error sink persists across replaceWith since it's on window, not the DOM.
+      window.addEventListener('error', function (e) {
+        var p = document.body || document.documentElement;
+        var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+        d.id = '__bundler_err';
+        d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+        d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+          '[bundle] ' + (e.message || e.type) +
+          (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+      }, true);
 
-    const manifest = JSON.parse(manifestEl.textContent);
-    let template = JSON.parse(templateEl.textContent);
-
-    const uuids = Object.keys(manifest);
-    setStatus('Unpacking ' + uuids.length + ' assets...');
-
-    const blobUrls = {};
-    await Promise.all(uuids.map(async (uuid) => {
-      const entry = manifest[uuid];
       try {
-        const binaryStr = atob(entry.data);
-        const bytes = new Uint8Array(binaryStr.length);
-        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
-
-        let finalBytes = bytes;
-        if (entry.compressed) {
-          if (typeof DecompressionStream !== 'undefined') {
-            const ds = new DecompressionStream('gzip');
-            const writer = ds.writable.getWriter();
-            const reader = ds.readable.getReader();
-            writer.write(bytes);
-            writer.close();
-            const chunks = [];
-            let totalLen = 0;
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              chunks.push(value);
-              totalLen += value.length;
-            }
-            finalBytes = new Uint8Array(totalLen);
-            let offset = 0;
-            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
-          } else {
-            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
-          }
+        const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+        const templateEl = document.querySelector('script[type="__bundler/template"]');
+        if (!manifestEl || !templateEl) {
+          setStatus('Error: missing bundle data');
+          console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+          return;
         }
 
-        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+        const manifest = JSON.parse(manifestEl.textContent);
+        let template = JSON.parse(templateEl.textContent);
+
+        const uuids = Object.keys(manifest);
+        setStatus('Unpacking ' + uuids.length + ' assets...');
+
+        const blobUrls = {};
+        await Promise.all(uuids.map(async (uuid) => {
+          const entry = manifest[uuid];
+          try {
+            const binaryStr = atob(entry.data);
+            const bytes = new Uint8Array(binaryStr.length);
+            for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+            let finalBytes = bytes;
+            if (entry.compressed) {
+              if (typeof DecompressionStream !== 'undefined') {
+                const ds = new DecompressionStream('gzip');
+                const writer = ds.writable.getWriter();
+                const reader = ds.readable.getReader();
+                writer.write(bytes);
+                writer.close();
+                const chunks = [];
+                let totalLen = 0;
+                while (true) {
+                  const { done, value } = await reader.read();
+                  if (done) break;
+                  chunks.push(value);
+                  totalLen += value.length;
+                }
+                finalBytes = new Uint8Array(totalLen);
+                let offset = 0;
+                for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+              } else {
+                console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+              }
+            }
+
+            blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+          } catch (err) {
+            console.error('Failed to decode asset ' + uuid + ':', err);
+            blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+          }
+        }));
+
+        const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+        const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+        const resourceMap = {};
+        for (const entry of extResources) {
+          if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+        }
+
+        setStatus('Rendering...');
+        for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+        // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+        // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+        // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+        template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+        const resourceScript = '<script>window.__resources = ' +
+          JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+          ';</' + 'script>';
+        // Inject after <head> so the DOCTYPE stays first; prepending the script
+        // would push the parser into quirks mode. DOMParser always emits a <head>
+        // (synthesizing one if the source HTML omitted it) but may carry
+        // attributes through, so match the full opening tag. slice() rather than
+        // replace() keeps us clear of $-pattern substitution in resourceScript.
+        const headOpen = template.match(/<head[^>]*>/i);
+        if (headOpen) {
+          const i = headOpen.index + headOpen[0].length;
+          template = template.slice(0, i) + resourceScript + template.slice(i);
+        }
+
+        // Parse the template and swap the root element. Scripts inserted via
+        // DOMParser/replaceWith are inert per spec — re-create each with
+        // createElement so they execute, awaiting onload for src scripts to
+        // preserve ordering (React before ReactDOM before Babel before text/babel).
+        const doc = new DOMParser().parseFromString(template, 'text/html');
+        document.documentElement.replaceWith(doc.documentElement);
+        const dead = Array.from(document.scripts);
+        for (const old of dead) {
+          const s = document.createElement('script');
+          for (const a of old.attributes) s.setAttribute(a.name, a.value);
+          s.textContent = old.textContent;
+          // text/babel scripts with a src: fetch and inline. transformScriptTags
+          // does XHR against the src, but blob:null/ from a file:// origin is
+          // silently dropped. Inlining makes it a plain inline babel script,
+          // which transformScriptTags handles unconditionally.
+          if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+            const r = await fetch(s.src);
+            s.textContent = await r.text();
+            s.removeAttribute('src');
+          }
+          const p = s.src ? new Promise(function (r) { s.onload = s.onerror = r; }) : null;
+          old.replaceWith(s);
+          if (p) await p;
+        }
+        // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+        // which fired before we swapped the document. Trigger manually if present.
+        if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+          window.Babel.transformScriptTags();
+        }
       } catch (err) {
-        console.error('Failed to decode asset ' + uuid + ':', err);
-        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+        setStatus('Error unpacking: ' + err.message);
+        console.error('Bundle unpack error:', err);
       }
-    }));
-
-    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
-    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
-    const resourceMap = {};
-    for (const entry of extResources) {
-      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
-    }
-
-    setStatus('Rendering...');
-    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
-
-    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
-    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
-    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
-    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
-
-    const resourceScript = '<script>window.__resources = ' +
-      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
-      ';</' + 'script>';
-    // Inject after <head> so the DOCTYPE stays first; prepending the script
-    // would push the parser into quirks mode. DOMParser always emits a <head>
-    // (synthesizing one if the source HTML omitted it) but may carry
-    // attributes through, so match the full opening tag. slice() rather than
-    // replace() keeps us clear of $-pattern substitution in resourceScript.
-    const headOpen = template.match(/<head[^>]*>/i);
-    if (headOpen) {
-      const i = headOpen.index + headOpen[0].length;
-      template = template.slice(0, i) + resourceScript + template.slice(i);
-    }
-
-    // Parse the template and swap the root element. Scripts inserted via
-    // DOMParser/replaceWith are inert per spec — re-create each with
-    // createElement so they execute, awaiting onload for src scripts to
-    // preserve ordering (React before ReactDOM before Babel before text/babel).
-    const doc = new DOMParser().parseFromString(template, 'text/html');
-    document.documentElement.replaceWith(doc.documentElement);
-    const dead = Array.from(document.scripts);
-    for (const old of dead) {
-      const s = document.createElement('script');
-      for (const a of old.attributes) s.setAttribute(a.name, a.value);
-      s.textContent = old.textContent;
-      // text/babel scripts with a src: fetch and inline. transformScriptTags
-      // does XHR against the src, but blob:null/ from a file:// origin is
-      // silently dropped. Inlining makes it a plain inline babel script,
-      // which transformScriptTags handles unconditionally.
-      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
-        const r = await fetch(s.src);
-        s.textContent = await r.text();
-        s.removeAttribute('src');
-      }
-      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
-      old.replaceWith(s);
-      if (p) await p;
-    }
-    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
-    // which fired before we swapped the document. Trigger manually if present.
-    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
-      window.Babel.transformScriptTags();
-    }
-  } catch (err) {
-    setStatus('Error unpacking: ' + err.message);
-    console.error('Bundle unpack error:', err);
-  }
-});
+    });
 
   </script>
 
@@ -179,7 +231,8 @@ document.addEventListener('DOMContentLoaded', async function() {
   </script>
 
   <script type="__bundler/template">
-"<!DOCTYPE html>\n<html lang=\"en\"><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>DVS - Home Page<\u002Ftitle>\n<style>\n  html, body { margin: 0; padding: 0; }\n  body {\n    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;\n    color: #323130;\n    background: #FAF9F8;\n    font-size: 14px;\n    line-height: 1.5;\n    -webkit-font-smoothing: antialiased;\n  }\n  a { color: #0078d4; text-decoration: none; }\n  a:hover { color: #106ebe; }\n  input:focus, select:focus { outline: none; border-color: #0078d4 !important; }\n  .nav-item:hover { background: #F3F2F1; }\n  .row:hover { background: #F3F2F1; }\n  .btn-primary:hover { background: #106ebe !important; }\n  .link:hover { text-decoration: underline; }\n  .lang-btn { padding: 4px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }\n  .lang-btn.active { background: white; color: #0078d4; }\n  .lang-btn.inactive { background: transparent; color: rgba(255,255,255,0.7); }\n<\u002Fstyle>\n\n\n<\u002Fhead>\n<body>\n\n<!-- TOP BAR -->\n<div style=\"display: flex; align-items: center; height: 48px; background: #0078d4; padding: 0 16px; gap: 12px;\">\n  <div style=\"display: flex; align-items: center; gap: 12px;\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"white\" style=\"opacity: 0.9;\"><rect x=\"1\" y=\"1\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"13\" y=\"1\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"1\" y=\"13\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"13\" y=\"13\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><\u002Fsvg>\n    <span style=\"color: white; font-size: 15px; font-weight: 600;\">DVS<\u002Fspan>\n    <span style=\"color: rgba(255,255,255,0.6); font-size: 13px;\">|<\u002Fspan>\n    <span id=\"topTitle\" style=\"color: rgba(255,255,255,0.85); font-size: 13px;\">Home<\u002Fspan>\n  <\u002Fdiv>\n  <div style=\"flex: 1;\"><\u002Fdiv>\n  <div style=\"display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.15); border-radius: 4px; padding: 2px;\">\n    <button class=\"lang-btn inactive\" id=\"btnLV\" onclick=\"setLang('lv')\">LV<\u002Fbutton>\n    <button class=\"lang-btn active\" id=\"btnEN\" onclick=\"setLang('en')\">EN<\u002Fbutton>\n  <\u002Fdiv>\n  <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(255,255,255,0.7)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9\"><\u002Fpath><path d=\"M13.73 21a2 2 0 0 1-3.46 0\"><\u002Fpath><\u002Fsvg>\n  <div style=\"width: 32px; height: 32px; border-radius: 50%; background: #106ebe; display: grid; place-items: center; color: white; font-weight: 600; font-size: 13px;\">JB<\u002Fdiv>\n<\u002Fdiv>\n\n<!-- MAIN LAYOUT -->\n<div style=\"display: flex; min-height: calc(100vh - 48px);\">\n\n  <!-- LEFT NAV -->\n  <nav style=\"width: 228px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #EDEBE9; padding: 16px 0; display: flex; flex-direction: column; gap: 1px; overflow-y: auto;\">\n    <div id=\"navTitle\" style=\"padding: 0 16px 10px; font-size: 11px; font-weight: 600; color: #0078d4; text-transform: uppercase; letter-spacing: 0.05em;\">Registers &amp; Lists<\u002Fdiv>\n    <a href=\"#\" style=\"display: flex; align-items: center; gap: 10px; padding: 8px 16px; color: #0078d4; font-weight: 600; font-size: 13px; background: #F3F2F1; border-left: 3px solid #0078d4;\">\n      <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"><\u002Fpath><polyline points=\"9 22 9 12 15 12 15 22\"><\u002Fpolyline><\u002Fsvg>\n      <span id=\"navHome\">Home<\u002Fspan>\n    <\u002Fa>\n    <div id=\"navLinks\"><\u002Fdiv>\n    <a href=\"#\" class=\"nav-item\" style=\"display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 19px; color: #323130; font-size: 13px;\">\n      <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#605E5C\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z\"><\u002Fpath><\u002Fsvg>\n      <span id=\"navArchive\">Archive<\u002Fspan>\n    <\u002Fa>\n    <div style=\"margin-top: auto; padding: 12px 16px; border-top: 1px solid #EDEBE9; font-size: 11px; color: #A19F9D;\">DVS v2.4.1<\u002Fdiv>\n  <\u002Fnav>\n\n  <!-- MAIN -->\n  <main style=\"flex: 1; padding: 24px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; min-width: 0;\">\n\n    <!-- Search + Create -->\n    <div style=\"display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px;\">\n      <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);\">\n        <div style=\"display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;\">\n          <div style=\"display: flex; align-items: center; gap: 8px;\">\n            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"><\u002Fcircle><path d=\"m21 21-4.3-4.3\"><\u002Fpath><\u002Fsvg>\n            <span id=\"searchTitle\" style=\"font-weight: 600; font-size: 15px;\">Search<\u002Fspan>\n          <\u002Fdiv>\n          <a href=\"#\" id=\"advSearchLink\" class=\"link\" style=\"font-size: 12px; font-weight: 600; color: #0078d4;\">Advanced search →<\u002Fa>\n        <\u002Fdiv>\n        <div style=\"display: flex; gap: 6px;\">\n          <input id=\"searchInput\" type=\"text\" placeholder=\"Enter keywords...\" style=\"flex: 1; height: 36px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 12px; font-size: 13px; font-family: inherit; background: white;\">\n          <button class=\"btn-primary\" style=\"height: 36px; padding: 0 16px; background: #0078d4; color: white; border: none; border-radius: 2px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"><\u002Fcircle><path d=\"m21 21-4.3-4.3\"><\u002Fpath><\u002Fsvg>\n            <span id=\"searchBtn\">Search<\u002Fspan>\n          <\u002Fbutton>\n        <\u002Fdiv>\n      <\u002Fdiv>\n      <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);\">\n        <div style=\"display: flex; align-items: center; gap: 8px; margin-bottom: 12px;\">\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"><\u002Fpath><path d=\"M5 12h14\"><\u002Fpath><\u002Fsvg>\n          <span id=\"createTitle\" style=\"font-weight: 600; font-size: 15px;\">Create new document<\u002Fspan>\n        <\u002Fdiv>\n        <div style=\"display: flex; gap: 6px;\">\n          <select id=\"registerSelect\" style=\"flex: 1; height: 36px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 10px; font-size: 13px; font-family: inherit; background: white; cursor: pointer;\"><\u002Fselect>\n          <button class=\"btn-primary\" style=\"height: 36px; padding: 0 16px; background: #0078d4; color: white; border: none; border-radius: 2px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"><\u002Fpath><path d=\"M5 12h14\"><\u002Fpath><\u002Fsvg>\n            <span id=\"createBtn\">Create<\u002Fspan>\n          <\u002Fbutton>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <!-- My Tasks -->\n    <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;\">\n      <div style=\"display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #EDEBE9;\">\n        <div style=\"display: flex; align-items: center; gap: 8px;\">\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 11l3 3L22 4\"><\u002Fpath><path d=\"M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11\"><\u002Fpath><\u002Fsvg>\n          <span id=\"tasksTitle\" style=\"font-weight: 600; font-size: 15px;\">My Tasks<\u002Fspan>\n          <span style=\"background: #DEECF9; color: #0078d4; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;\">7<\u002Fspan>\n        <\u002Fdiv>\n        <a href=\"#\" class=\"link\" style=\"font-size: 13px; font-weight: 600; color: #0078d4; display: flex; align-items: center; gap: 4px;\">\n          <span id=\"viewAllBtn\">View all<\u002Fspan>\n          <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"><\u002Fpath><path d=\"m12 5 7 7-7 7\"><\u002Fpath><\u002Fsvg>\n        <\u002Fa>\n      <\u002Fdiv>\n      <div style=\"overflow-x: auto;\">\n        <div style=\"min-width: 720px;\">\n          <div id=\"tasksHeader\" style=\"display: grid; grid-template-columns: 100px 1fr 100px 110px 90px 120px; padding: 8px 16px; background: #FAF9F8; border-bottom: 1px solid #EDEBE9; font-size: 11px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.03em;\"><\u002Fdiv>\n          <div id=\"tasksBody\"><\u002Fdiv>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <!-- My Initiated Processes -->\n    <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;\">\n      <div style=\"display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #EDEBE9; gap: 8px;\">\n        <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"16 3 21 3 21 8\"><\u002Fpolyline><line x1=\"4\" y1=\"20\" x2=\"21\" y2=\"3\"><\u002Fline><polyline points=\"21 16 21 21 16 21\"><\u002Fpolyline><line x1=\"15\" y1=\"15\" x2=\"21\" y2=\"21\"><\u002Fline><line x1=\"4\" y1=\"4\" x2=\"9\" y2=\"9\"><\u002Fline><\u002Fsvg>\n        <span id=\"processesTitle\" style=\"font-weight: 600; font-size: 15px;\">My Initiated Processes<\u002Fspan>\n        <span style=\"background: #DEECF9; color: #0078d4; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;\">5<\u002Fspan>\n      <\u002Fdiv>\n      <div style=\"overflow-x: auto;\">\n        <div style=\"min-width: 780px;\">\n          <div id=\"processesHeader\" style=\"display: grid; grid-template-columns: 100px 1fr 120px 120px 110px 130px; padding: 8px 16px; background: #FAF9F8; border-bottom: 1px solid #EDEBE9; font-size: 11px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.03em;\"><\u002Fdiv>\n          <div id=\"processesBody\"><\u002Fdiv>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <!-- My Favorites -->\n    <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;\">\n      <div style=\"display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #EDEBE9; gap: 8px;\">\n        <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\"><\u002Fpolygon><\u002Fsvg>\n        <span id=\"favoritesTitle\" style=\"font-weight: 600; font-size: 15px;\">My Favorites<\u002Fspan>\n        <span style=\"background: #DEECF9; color: #0078d4; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;\">6<\u002Fspan>\n      <\u002Fdiv>\n      <div style=\"overflow-x: auto;\">\n        <div style=\"min-width: 680px;\">\n          <div id=\"favoritesHeader\" style=\"display: grid; grid-template-columns: 100px 1fr 120px 130px 110px 36px; padding: 8px 16px; background: #FAF9F8; border-bottom: 1px solid #EDEBE9; font-size: 11px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.03em;\"><\u002Fdiv>\n          <div id=\"favoritesBody\"><\u002Fdiv>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n  <\u002Fmain>\n<\u002Fdiv>\n\n<script>\nconst T = {\n  en: {\n    home: 'Home', registers: 'Registers & Lists', archive: 'Archive',\n    search: 'Search', advSearch: 'Advanced search →', searchPh: 'Enter keywords...', searchBtn: 'Search',\n    create: 'Create new document', selectReg: 'Select register...', createBtn: 'Create',\n    tasksLbl: 'My Tasks', viewAll: 'View all',\n    processesLbl: 'My Initiated Processes', favoritesLbl: 'My Favorites',\n    colDocNo: 'Doc No.', colName: 'Name', colType: 'Type', colDocType: 'Doc type',\n    colDueDate: 'Due date', colResp: 'Responsible',\n    colDocSet: 'Doc set name', colStatus: 'Status', colUnit: 'Struct. unit', colWaiting: 'Waiting for',\n    navItems: ['Incoming correspondence','Outgoing correspondence','Contracts','Orders','Internal documents','Protocols'],\n    tasks: [\n      {no:'IK-2026/142',name:'Review contract terms',type:'Approval',dt:'Inc. corr.',due:'05.07.2026',dc:'#A4262C',resp:'A. Kalniņa'},\n      {no:'LG-2026/087',name:'Sign cooperation agreement',type:'Signing',dt:'Contracts',due:'08.07.2026',dc:'#986F0B',resp:'M. Ozoliņš'},\n      {no:'RK-2026/031',name:'Approve leave order',type:'Confirmation',dt:'Orders',due:'10.07.2026',dc:'#323130',resp:'J. Bērziņš'},\n      {no:'IK-2026/155',name:'Prepare response to request',type:'Execution',dt:'Inc. corr.',due:'12.07.2026',dc:'#323130',resp:'I. Liepiņa'},\n      {no:'PR-2026/012',name:'Review protocol draft',type:'Approval',dt:'Protocols',due:'14.07.2026',dc:'#323130',resp:'D. Vītoliņš'},\n      {no:'IK-2026/161',name:'Register received letter',type:'Registration',dt:'Inc. corr.',due:'15.07.2026',dc:'#323130',resp:'A. Kalniņa'},\n      {no:'ID-2026/044',name:'Approve internal rule amendments',type:'Approval',dt:'Int. doc.',due:'18.07.2026',dc:'#323130',resp:'M. Ozoliņš'},\n    ],\n    processes: [\n      {no:'IK-2026/158',name:'Reply to SIA \"Tehno\" request',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Inc. corr.',wait:'Approval (2/3)'},\n      {no:'LG-2026/091',name:'Lease with AS \"Rīgas nami\"',status:'Signing',sb:'#DEECF9',sc:'#0078d4',unit:'Admin dept.',dt:'Contracts',wait:'Manager signature'},\n      {no:'EK-2026/203',name:'Letter to State Revenue Service',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Finance dept.',dt:'Out. corr.',wait:'Approval (1/2)'},\n      {no:'RK-2026/029',name:'Order on working time records',status:'Approved',sb:'#DFF6DD',sc:'#107C10',unit:'HR dept.',dt:'Orders',wait:'Completed'},\n      {no:'ID-2026/041',name:'Internal rules update',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Int. doc.',wait:'Approval (3/4)'},\n    ],\n    favorites: [\n      {no:'LG-2026/078',name:'Service contract with SIA \"DataPro\"',status:'Active',sb:'#DFF6DD',sc:'#107C10',unit:'IT dept.',dt:'Contracts'},\n      {no:'IK-2026/130',name:'Cabinet regulation application issue',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Inc. corr.'},\n      {no:'RK-2026/025',name:'Order on business trip procedure',status:'Approved',sb:'#DFF6DD',sc:'#107C10',unit:'HR dept.',dt:'Orders'},\n      {no:'EK-2026/195',name:'Information request to VARAM',status:'Sent',sb:'#DEECF9',sc:'#0078d4',unit:'Finance dept.',dt:'Out. corr.'},\n      {no:'PR-2026/008',name:'Board meeting protocol No. 8',status:'Approved',sb:'#DFF6DD',sc:'#107C10',unit:'Chancellery',dt:'Protocols'},\n      {no:'ID-2026/038',name:'Data protection policy update',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Int. doc.'},\n    ],\n  },\n  lv: {\n    home: 'Sākumlapa', registers: 'Reģistri un saraksti', archive: 'Arhīvs',\n    search: 'Meklēt', advSearch: 'Paplašinātā meklēšana →', searchPh: 'Ievadiet atslēgvārdus...', searchBtn: 'Meklēt',\n    create: 'Izveidot jaunu dokumentu', selectReg: 'Izvēlieties reģistru...', createBtn: 'Izveidot',\n    tasksLbl: 'Mani uzdevumi', viewAll: 'Skatīt visus',\n    processesLbl: 'Mani ierosinātie procesi', favoritesLbl: 'Mani favorīti',\n    colDocNo: 'Dok. Nr.', colName: 'Nosaukums', colType: 'Veids', colDocType: 'Dok. veids',\n    colDueDate: 'Termiņš', colResp: 'Atbildīgais',\n    colDocSet: 'Dok. kopas nos.', colStatus: 'Statuss', colUnit: 'Struktūrvienība', colWaiting: 'Gaida',\n    navItems: ['Ienākošā korespondence','Izejošā korespondence','Līgumi','Rīkojumi','Iekšējie dokumenti','Protokoli'],\n    tasks: [\n      {no:'IK-2026/142',name:'Pārskatīt līguma nosacījumus',type:'Saskaņošana',dt:'Ien. koresp.',due:'05.07.2026',dc:'#A4262C',resp:'A. Kalniņa'},\n      {no:'LG-2026/087',name:'Parakstīt sadarbības līgumu',type:'Parakstīšana',dt:'Līgumi',due:'08.07.2026',dc:'#986F0B',resp:'M. Ozoliņš'},\n      {no:'RK-2026/031',name:'Apstiprināt rīkojumu par atvaļinājumiem',type:'Apstiprināšana',dt:'Rīkojumi',due:'10.07.2026',dc:'#323130',resp:'J. Bērziņš'},\n      {no:'IK-2026/155',name:'Sagatavot atbildi uz pieprasījumu',type:'Izpilde',dt:'Ien. koresp.',due:'12.07.2026',dc:'#323130',resp:'I. Liepiņa'},\n      {no:'PR-2026/012',name:'Izskatīt protokola projektu',type:'Saskaņošana',dt:'Protokoli',due:'14.07.2026',dc:'#323130',resp:'D. Vītoliņš'},\n      {no:'IK-2026/161',name:'Reģistrēt saņemto vēstuli',type:'Reģistrēšana',dt:'Ien. koresp.',due:'15.07.2026',dc:'#323130',resp:'A. Kalniņa'},\n      {no:'ID-2026/044',name:'Saskaņot iekšējo noteikumu grozījumus',type:'Saskaņošana',dt:'Iekš. dok.',due:'18.07.2026',dc:'#323130',resp:'M. Ozoliņš'},\n    ],\n    processes: [\n      {no:'IK-2026/158',name:'Atbilde uz SIA \"Tehno\" pieprasījumu',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Ien. koresp.',wait:'Saskaņošana (2/3)'},\n      {no:'LG-2026/091',name:'Nomas līgums ar AS \"Rīgas nami\"',status:'Parakstīšanā',sb:'#DEECF9',sc:'#0078d4',unit:'Saimnieciskā nod.',dt:'Līgumi',wait:'Vadītāja paraksts'},\n      {no:'EK-2026/203',name:'Vēstule Valsts ieņēmumu dienestam',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Finanšu nod.',dt:'Izej. koresp.',wait:'Saskaņošana (1/2)'},\n      {no:'RK-2026/029',name:'Rīkojums par darba laika uzskaiti',status:'Apstiprināts',sb:'#DFF6DD',sc:'#107C10',unit:'Personāla nod.',dt:'Rīkojumi',wait:'Pabeigts'},\n      {no:'ID-2026/041',name:'Iekšējās kārtības noteikumu aktualizācija',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Iekš. dok.',wait:'Saskaņošana (3/4)'},\n    ],\n    favorites: [\n      {no:'LG-2026/078',name:'Pakalpojumu līgums ar SIA \"DataPro\"',status:'Aktīvs',sb:'#DFF6DD',sc:'#107C10',unit:'IT nodaļa',dt:'Līgumi'},\n      {no:'IK-2026/130',name:'MK noteikumu piemērošanas jautājums',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Ien. koresp.'},\n      {no:'RK-2026/025',name:'Rīkojums par komandējumu kārtību',status:'Apstiprināts',sb:'#DFF6DD',sc:'#107C10',unit:'Personāla nod.',dt:'Rīkojumi'},\n      {no:'EK-2026/195',name:'Informācijas pieprasījums VARAM',status:'Nosūtīts',sb:'#DEECF9',sc:'#0078d4',unit:'Finanšu nod.',dt:'Izej. koresp.'},\n      {no:'PR-2026/008',name:'Valdes sēdes protokols Nr. 8',status:'Apstiprināts',sb:'#DFF6DD',sc:'#107C10',unit:'Kanceleja',dt:'Protokoli'},\n      {no:'ID-2026/038',name:'Datu aizsardzības politikas aktualizācija',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Iekš. dok.'},\n    ],\n  }\n};\n\nlet currentLang = 'en';\n\nfunction setLang(lang) {\n  currentLang = lang;\n  document.getElementById('btnLV').className = 'lang-btn ' + (lang==='lv'?'active':'inactive');\n  document.getElementById('btnEN').className = 'lang-btn ' + (lang==='en'?'active':'inactive');\n  render();\n}\n\nfunction esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }\n\nfunction render() {\n  const t = T[currentLang];\n  document.getElementById('topTitle').textContent = t.home;\n  document.getElementById('navTitle').innerHTML = esc(t.registers);\n  document.getElementById('navHome').textContent = t.home;\n  document.getElementById('navArchive').textContent = t.archive;\n  document.getElementById('searchTitle').textContent = t.search;\n  document.getElementById('advSearchLink').textContent = t.advSearch;\n  document.getElementById('searchInput').placeholder = t.searchPh;\n  document.getElementById('searchBtn').textContent = t.searchBtn;\n  document.getElementById('createTitle').textContent = t.create;\n  document.getElementById('createBtn').textContent = t.createBtn;\n  document.getElementById('tasksTitle').textContent = t.tasksLbl;\n  document.getElementById('viewAllBtn').textContent = t.viewAll;\n  document.getElementById('processesTitle').textContent = t.processesLbl;\n  document.getElementById('favoritesTitle').textContent = t.favoritesLbl;\n\n  // Nav links\n  const docIcon = '<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#605E5C\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><\u002Fsvg>';\n  document.getElementById('navLinks').innerHTML = t.navItems.map(n =>\n    '<a href=\"#\" class=\"nav-item\" style=\"display:flex;align-items:center;gap:10px;padding:8px 16px 8px 19px;color:#323130;font-size:13px;text-decoration:none;\">' + docIcon + esc(n) + '<\u002Fa>'\n  ).join('');\n\n  // Register select\n  document.getElementById('registerSelect').innerHTML = '<option value=\"\">' + esc(t.selectReg) + '<\u002Foption>' + t.navItems.map(n => '<option>' + esc(n) + '<\u002Foption>').join('');\n\n  // Tasks\n  document.getElementById('tasksHeader').innerHTML = [t.colDocNo,t.colName,t.colType,t.colDocType,t.colDueDate,t.colResp].map(c => '<span>' + esc(c) + '<\u002Fspan>').join('');\n  document.getElementById('tasksBody').innerHTML = t.tasks.map(r =>\n    '<div class=\"row\" style=\"cursor:pointer;display:grid;grid-template-columns:100px 1fr 100px 110px 90px 120px;padding:9px 16px;border-bottom:1px solid #F3F2F1;align-items:center;font-size:13px;\">' +\n    '<span style=\"color:#0078d4;font-weight:600;font-size:12px;\">' + esc(r.no) + '<\u002Fspan>' +\n    '<span style=\"font-weight:500;\">' + esc(r.name) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.type) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.dt) + '<\u002Fspan>' +\n    '<span style=\"font-weight:600;font-size:12px;color:' + r.dc + ';\">' + esc(r.due) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.resp) + '<\u002Fspan><\u002Fdiv>'\n  ).join('');\n\n  // Processes\n  document.getElementById('processesHeader').innerHTML = [t.colDocNo,t.colDocSet,t.colStatus,t.colUnit,t.colDocType,t.colWaiting].map(c => '<span>' + esc(c) + '<\u002Fspan>').join('');\n  document.getElementById('processesBody').innerHTML = t.processes.map(r =>\n    '<div class=\"row\" style=\"cursor:pointer;display:grid;grid-template-columns:100px 1fr 120px 120px 110px 130px;padding:9px 16px;border-bottom:1px solid #F3F2F1;align-items:center;font-size:13px;\">' +\n    '<span style=\"color:#0078d4;font-weight:600;font-size:12px;\">' + esc(r.no) + '<\u002Fspan>' +\n    '<span style=\"font-weight:500;\">' + esc(r.name) + '<\u002Fspan>' +\n    '<span><span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:600;background:' + r.sb + ';color:' + r.sc + ';\">' + esc(r.status) + '<\u002Fspan><\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.unit) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.dt) + '<\u002Fspan>' +\n    '<span style=\"color:#A19F9D;font-size:12px;\">' + esc(r.wait) + '<\u002Fspan><\u002Fdiv>'\n  ).join('');\n\n  // Favorites\n  document.getElementById('favoritesHeader').innerHTML = [t.colDocNo,t.colDocSet,t.colStatus,t.colUnit,t.colDocType,''].map(c => '<span>' + esc(c) + '<\u002Fspan>').join('');\n  const star = '<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\"><polygon points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\"/><\u002Fsvg>';\n  document.getElementById('favoritesBody').innerHTML = t.favorites.map(r =>\n    '<div class=\"row\" style=\"cursor:pointer;display:grid;grid-template-columns:100px 1fr 120px 130px 110px 36px;padding:9px 16px;border-bottom:1px solid #F3F2F1;align-items:center;font-size:13px;\">' +\n    '<span style=\"color:#0078d4;font-weight:600;font-size:12px;\">' + esc(r.no) + '<\u002Fspan>' +\n    '<span style=\"font-weight:500;\">' + esc(r.name) + '<\u002Fspan>' +\n    '<span><span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:600;background:' + r.sb + ';color:' + r.sc + ';\">' + esc(r.status) + '<\u002Fspan><\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.unit) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.dt) + '<\u002Fspan>' +\n    '<span style=\"color:#FFB900;display:grid;place-items:center;\">' + star + '<\u002Fspan><\u002Fdiv>'\n  ).join('');\n}\n\nrender();\n<\u002Fscript>\n\n\n<\u002Fbody><\u002Fhtml>"
+"<!DOCTYPE html>\n<html lang=\"en\"><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>DVS - Home Page<\u002Ftitle>\n<style>\n  html, body { margin: 0; padding: 0; }\n  body {\n    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;\n    color: #323130;\n    background: #FAF9F8;\n    font-size: 14px;\n    line-height: 1.5;\n    -webkit-font-smoothing: antialiased;\n  }\n  a { color: #0078d4; text-decoration: none; }\n  a:hover { color: #106ebe; }\n  input:focus, select:focus { outline: none; border-color: #0078d4 !important; }\n  .nav-item:hover { background: #F3F2F1; }\n  .row:hover { background: #F3F2F1; }\n  .btn-primary:hover { background: #106ebe !important; }\n  .link:hover { text-decoration: underline; }\n  .lang-btn { padding: 4px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }\n  .lang-btn.active { background: white; color: #0078d4; }\n  .lang-btn.inactive { background: transparent; color: rgba(255,255,255,0.7); }\n<\u002Fstyle>\n\n\n<\u002Fhead>\n<body>\n\n<!-- TOP BAR -->\n<div style=\"display: flex; align-items: center; height: 48px; background: #0078d4; padding: 0 16px; gap: 12px;\">\n  <div style=\"display: flex; align-items: center; gap: 12px;\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"white\" style=\"opacity: 0.9;\"><rect x=\"1\" y=\"1\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"13\" y=\"1\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"1\" y=\"13\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"13\" y=\"13\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><\u002Fsvg>\n    <span style=\"color: white; font-size: 15px; font-weight: 600;\">DVS<\u002Fspan>\n    <span style=\"color: rgba(255,255,255,0.6); font-size: 13px;\">|<\u002Fspan>\n    <span id=\"topTitle\" style=\"color: rgba(255,255,255,0.85); font-size: 13px;\">Home<\u002Fspan>\n  <\u002Fdiv>\n  <div style=\"flex: 1;\"><\u002Fdiv>\n  <div style=\"display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.15); border-radius: 4px; padding: 2px;\">\n    <button class=\"lang-btn inactive\" id=\"btnLV\" onclick=\"setLang('lv')\">LV<\u002Fbutton>\n    <button class=\"lang-btn active\" id=\"btnEN\" onclick=\"setLang('en')\">EN<\u002Fbutton>\n  <\u002Fdiv>\n  <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(255,255,255,0.7)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9\"><\u002Fpath><path d=\"M13.73 21a2 2 0 0 1-3.46 0\"><\u002Fpath><\u002Fsvg>\n  <div style=\"width: 32px; height: 32px; border-radius: 50%; background: #106ebe; display: grid; place-items: center; color: white; font-weight: 600; font-size: 13px;\">JB<\u002Fdiv>\n<\u002Fdiv>\n\n<!-- MAIN LAYOUT -->\n<div style=\"display: flex; min-height: calc(100vh - 48px);\">\n\n  <!-- LEFT NAV -->\n  <nav style=\"width: 228px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #EDEBE9; padding: 16px 0; display: flex; flex-direction: column; gap: 1px; overflow-y: auto;\">\n    <div id=\"navTitle\" style=\"padding: 0 16px 10px; font-size: 11px; font-weight: 600; color: #0078d4; text-transform: uppercase; letter-spacing: 0.05em;\">Registers &amp; Lists<\u002Fdiv>\n    <a href=\"#\" style=\"display: flex; align-items: center; gap: 10px; padding: 8px 16px; color: #0078d4; font-weight: 600; font-size: 13px; background: #F3F2F1; border-left: 3px solid #0078d4;\">\n      <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"><\u002Fpath><polyline points=\"9 22 9 12 15 12 15 22\"><\u002Fpolyline><\u002Fsvg>\n      <span id=\"navHome\">Home<\u002Fspan>\n    <\u002Fa>\n    <div id=\"navLinks\"><\u002Fdiv>\n    <a href=\"#\" class=\"nav-item\" style=\"display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 19px; color: #323130; font-size: 13px;\">\n      <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#605E5C\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z\"><\u002Fpath><\u002Fsvg>\n      <span id=\"navArchive\">Archive<\u002Fspan>\n    <\u002Fa>\n    <div style=\"margin-top: auto; padding: 12px 16px; border-top: 1px solid #EDEBE9; font-size: 11px; color: #A19F9D;\">DVS v2.4.1<\u002Fdiv>\n  <\u002Fnav>\n\n  <!-- MAIN -->\n  <main style=\"flex: 1; padding: 24px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; min-width: 0;\">\n\n    <!-- Search + Create -->\n    <div style=\"display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px;\">\n      <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);\">\n        <div style=\"display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;\">\n          <div style=\"display: flex; align-items: center; gap: 8px;\">\n            <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"><\u002Fcircle><path d=\"m21 21-4.3-4.3\"><\u002Fpath><\u002Fsvg>\n            <span id=\"searchTitle\" style=\"font-weight: 600; font-size: 15px;\">Search<\u002Fspan>\n          <\u002Fdiv>\n          <a href=\"search.html\" id=\"advSearchLink\" class=\"link\" style=\"font-size: 12px; font-weight: 600; color: #0078d4;\">Advanced search →<\u002Fa>\n        <\u002Fdiv>\n        <div style=\"display: flex; gap: 6px;\">\n          <input id=\"searchInput\" type=\"text\" placeholder=\"Enter keywords...\" style=\"flex: 1; height: 36px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 12px; font-size: 13px; font-family: inherit; background: white;\">\n          <button class=\"btn-primary\" style=\"height: 36px; padding: 0 16px; background: #0078d4; color: white; border: none; border-radius: 2px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"><\u002Fcircle><path d=\"m21 21-4.3-4.3\"><\u002Fpath><\u002Fsvg>\n            <span id=\"searchBtn\">Search<\u002Fspan>\n          <\u002Fbutton>\n        <\u002Fdiv>\n      <\u002Fdiv>\n      <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);\">\n        <div style=\"display: flex; align-items: center; gap: 8px; margin-bottom: 12px;\">\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"><\u002Fpath><path d=\"M5 12h14\"><\u002Fpath><\u002Fsvg>\n          <span id=\"createTitle\" style=\"font-weight: 600; font-size: 15px;\">Create new document<\u002Fspan>\n        <\u002Fdiv>\n        <div style=\"display: flex; gap: 6px;\">\n          <select id=\"registerSelect\" style=\"flex: 1; height: 36px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 10px; font-size: 13px; font-family: inherit; background: white; cursor: pointer;\"><\u002Fselect>\n          <button class=\"btn-primary\" style=\"height: 36px; padding: 0 16px; background: #0078d4; color: white; border: none; border-radius: 2px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14\"><\u002Fpath><path d=\"M5 12h14\"><\u002Fpath><\u002Fsvg>\n            <span id=\"createBtn\">Create<\u002Fspan>\n          <\u002Fbutton>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <!-- My Tasks -->\n    <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;\">\n      <div style=\"display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #EDEBE9;\">\n        <div style=\"display: flex; align-items: center; gap: 8px;\">\n          <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 11l3 3L22 4\"><\u002Fpath><path d=\"M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11\"><\u002Fpath><\u002Fsvg>\n          <span id=\"tasksTitle\" style=\"font-weight: 600; font-size: 15px;\">My Tasks<\u002Fspan>\n          <span style=\"background: #DEECF9; color: #0078d4; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;\">7<\u002Fspan>\n        <\u002Fdiv>\n        <a href=\"#\" class=\"link\" style=\"font-size: 13px; font-weight: 600; color: #0078d4; display: flex; align-items: center; gap: 4px;\">\n          <span id=\"viewAllBtn\">View all<\u002Fspan>\n          <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"><\u002Fpath><path d=\"m12 5 7 7-7 7\"><\u002Fpath><\u002Fsvg>\n        <\u002Fa>\n      <\u002Fdiv>\n      <div style=\"overflow-x: auto;\">\n        <div style=\"min-width: 720px;\">\n          <div id=\"tasksHeader\" style=\"display: grid; grid-template-columns: 100px 1fr 100px 110px 90px 120px; padding: 8px 16px; background: #FAF9F8; border-bottom: 1px solid #EDEBE9; font-size: 11px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.03em;\"><\u002Fdiv>\n          <div id=\"tasksBody\"><\u002Fdiv>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <!-- My Initiated Processes -->\n    <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;\">\n      <div style=\"display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #EDEBE9; gap: 8px;\">\n        <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"16 3 21 3 21 8\"><\u002Fpolyline><line x1=\"4\" y1=\"20\" x2=\"21\" y2=\"3\"><\u002Fline><polyline points=\"21 16 21 21 16 21\"><\u002Fpolyline><line x1=\"15\" y1=\"15\" x2=\"21\" y2=\"21\"><\u002Fline><line x1=\"4\" y1=\"4\" x2=\"9\" y2=\"9\"><\u002Fline><\u002Fsvg>\n        <span id=\"processesTitle\" style=\"font-weight: 600; font-size: 15px;\">My Initiated Processes<\u002Fspan>\n        <span style=\"background: #DEECF9; color: #0078d4; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;\">5<\u002Fspan>\n      <\u002Fdiv>\n      <div style=\"overflow-x: auto;\">\n        <div style=\"min-width: 780px;\">\n          <div id=\"processesHeader\" style=\"display: grid; grid-template-columns: 100px 1fr 120px 120px 110px 130px; padding: 8px 16px; background: #FAF9F8; border-bottom: 1px solid #EDEBE9; font-size: 11px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.03em;\"><\u002Fdiv>\n          <div id=\"processesBody\"><\u002Fdiv>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <!-- My Favorites -->\n    <div style=\"background: white; border-radius: 4px; border: 1px solid #EDEBE9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); overflow: hidden;\">\n      <div style=\"display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #EDEBE9; gap: 8px;\">\n        <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#0078d4\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\"><\u002Fpolygon><\u002Fsvg>\n        <span id=\"favoritesTitle\" style=\"font-weight: 600; font-size: 15px;\">My Favorites<\u002Fspan>\n        <span style=\"background: #DEECF9; color: #0078d4; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;\">6<\u002Fspan>\n      <\u002Fdiv>\n      <div style=\"overflow-x: auto;\">\n        <div style=\"min-width: 680px;\">\n          <div id=\"favoritesHeader\" style=\"display: grid; grid-template-columns: 100px 1fr 120px 130px 110px 36px; padding: 8px 16px; background: #FAF9F8; border-bottom: 1px solid #EDEBE9; font-size: 11px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.03em;\"><\u002Fdiv>\n          <div id=\"favoritesBody\"><\u002Fdiv>\n        <\u002Fdiv>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n  <\u002Fmain>\n<\u002Fdiv>\n\n<script>\nconst T = {\n  en: {\n    home: 'Home', registers: 'Registers & Lists', archive: 'Archive',\n    search: 'Search', advSearch: 'Advanced search →', searchPh: 'Enter keywords...', searchBtn: 'Search',\n    create: 'Create new document', selectReg: 'Select register...', createBtn: 'Create',\n    tasksLbl: 'My Tasks', viewAll: 'View all',\n    processesLbl: 'My Initiated Processes', favoritesLbl: 'My Favorites',\n    colDocNo: 'Doc No.', colName: 'Name', colType: 'Type', colDocType: 'Doc type',\n    colDueDate: 'Due date', colResp: 'Responsible',\n    colDocSet: 'Doc set name', colStatus: 'Status', colUnit: 'Struct. unit', colWaiting: 'Waiting for',\n    navItems: ['Incoming correspondence','Outgoing correspondence','Contracts','Orders','Internal documents','Protocols'],\n    tasks: [\n      {no:'IK-2026/142',name:'Review contract terms',type:'Approval',dt:'Inc. corr.',due:'05.07.2026',dc:'#A4262C',resp:'A. Kalniņa'},\n      {no:'LG-2026/087',name:'Sign cooperation agreement',type:'Signing',dt:'Contracts',due:'08.07.2026',dc:'#986F0B',resp:'M. Ozoliņš'},\n      {no:'RK-2026/031',name:'Approve leave order',type:'Confirmation',dt:'Orders',due:'10.07.2026',dc:'#323130',resp:'J. Bērziņš'},\n      {no:'IK-2026/155',name:'Prepare response to request',type:'Execution',dt:'Inc. corr.',due:'12.07.2026',dc:'#323130',resp:'I. Liepiņa'},\n      {no:'PR-2026/012',name:'Review protocol draft',type:'Approval',dt:'Protocols',due:'14.07.2026',dc:'#323130',resp:'D. Vītoliņš'},\n      {no:'IK-2026/161',name:'Register received letter',type:'Registration',dt:'Inc. corr.',due:'15.07.2026',dc:'#323130',resp:'A. Kalniņa'},\n      {no:'ID-2026/044',name:'Approve internal rule amendments',type:'Approval',dt:'Int. doc.',due:'18.07.2026',dc:'#323130',resp:'M. Ozoliņš'},\n    ],\n    processes: [\n      {no:'IK-2026/158',name:'Reply to SIA \"Tehno\" request',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Inc. corr.',wait:'Approval (2/3)'},\n      {no:'LG-2026/091',name:'Lease with AS \"Rīgas nami\"',status:'Signing',sb:'#DEECF9',sc:'#0078d4',unit:'Admin dept.',dt:'Contracts',wait:'Manager signature'},\n      {no:'EK-2026/203',name:'Letter to State Revenue Service',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Finance dept.',dt:'Out. corr.',wait:'Approval (1/2)'},\n      {no:'RK-2026/029',name:'Order on working time records',status:'Approved',sb:'#DFF6DD',sc:'#107C10',unit:'HR dept.',dt:'Orders',wait:'Completed'},\n      {no:'ID-2026/041',name:'Internal rules update',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Int. doc.',wait:'Approval (3/4)'},\n    ],\n    favorites: [\n      {no:'LG-2026/078',name:'Service contract with SIA \"DataPro\"',status:'Active',sb:'#DFF6DD',sc:'#107C10',unit:'IT dept.',dt:'Contracts'},\n      {no:'IK-2026/130',name:'Cabinet regulation application issue',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Inc. corr.'},\n      {no:'RK-2026/025',name:'Order on business trip procedure',status:'Approved',sb:'#DFF6DD',sc:'#107C10',unit:'HR dept.',dt:'Orders'},\n      {no:'EK-2026/195',name:'Information request to VARAM',status:'Sent',sb:'#DEECF9',sc:'#0078d4',unit:'Finance dept.',dt:'Out. corr.'},\n      {no:'PR-2026/008',name:'Board meeting protocol No. 8',status:'Approved',sb:'#DFF6DD',sc:'#107C10',unit:'Chancellery',dt:'Protocols'},\n      {no:'ID-2026/038',name:'Data protection policy update',status:'In progress',sb:'#FFF4CE',sc:'#986F0B',unit:'Legal dept.',dt:'Int. doc.'},\n    ],\n  },\n  lv: {\n    home: 'Sākumlapa', registers: 'Reģistri un saraksti', archive: 'Arhīvs',\n    search: 'Meklēt', advSearch: 'Paplašinātā meklēšana →', searchPh: 'Ievadiet atslēgvārdus...', searchBtn: 'Meklēt',\n    create: 'Izveidot jaunu dokumentu', selectReg: 'Izvēlieties reģistru...', createBtn: 'Izveidot',\n    tasksLbl: 'Mani uzdevumi', viewAll: 'Skatīt visus',\n    processesLbl: 'Mani ierosinātie procesi', favoritesLbl: 'Mani favorīti',\n    colDocNo: 'Dok. Nr.', colName: 'Nosaukums', colType: 'Veids', colDocType: 'Dok. veids',\n    colDueDate: 'Termiņš', colResp: 'Atbildīgais',\n    colDocSet: 'Dok. kopas nos.', colStatus: 'Statuss', colUnit: 'Struktūrvienība', colWaiting: 'Gaida',\n    navItems: ['Ienākošā korespondence','Izejošā korespondence','Līgumi','Rīkojumi','Iekšējie dokumenti','Protokoli'],\n    tasks: [\n      {no:'IK-2026/142',name:'Pārskatīt līguma nosacījumus',type:'Saskaņošana',dt:'Ien. koresp.',due:'05.07.2026',dc:'#A4262C',resp:'A. Kalniņa'},\n      {no:'LG-2026/087',name:'Parakstīt sadarbības līgumu',type:'Parakstīšana',dt:'Līgumi',due:'08.07.2026',dc:'#986F0B',resp:'M. Ozoliņš'},\n      {no:'RK-2026/031',name:'Apstiprināt rīkojumu par atvaļinājumiem',type:'Apstiprināšana',dt:'Rīkojumi',due:'10.07.2026',dc:'#323130',resp:'J. Bērziņš'},\n      {no:'IK-2026/155',name:'Sagatavot atbildi uz pieprasījumu',type:'Izpilde',dt:'Ien. koresp.',due:'12.07.2026',dc:'#323130',resp:'I. Liepiņa'},\n      {no:'PR-2026/012',name:'Izskatīt protokola projektu',type:'Saskaņošana',dt:'Protokoli',due:'14.07.2026',dc:'#323130',resp:'D. Vītoliņš'},\n      {no:'IK-2026/161',name:'Reģistrēt saņemto vēstuli',type:'Reģistrēšana',dt:'Ien. koresp.',due:'15.07.2026',dc:'#323130',resp:'A. Kalniņa'},\n      {no:'ID-2026/044',name:'Saskaņot iekšējo noteikumu grozījumus',type:'Saskaņošana',dt:'Iekš. dok.',due:'18.07.2026',dc:'#323130',resp:'M. Ozoliņš'},\n    ],\n    processes: [\n      {no:'IK-2026/158',name:'Atbilde uz SIA \"Tehno\" pieprasījumu',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Ien. koresp.',wait:'Saskaņošana (2/3)'},\n      {no:'LG-2026/091',name:'Nomas līgums ar AS \"Rīgas nami\"',status:'Parakstīšanā',sb:'#DEECF9',sc:'#0078d4',unit:'Saimnieciskā nod.',dt:'Līgumi',wait:'Vadītāja paraksts'},\n      {no:'EK-2026/203',name:'Vēstule Valsts ieņēmumu dienestam',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Finanšu nod.',dt:'Izej. koresp.',wait:'Saskaņošana (1/2)'},\n      {no:'RK-2026/029',name:'Rīkojums par darba laika uzskaiti',status:'Apstiprināts',sb:'#DFF6DD',sc:'#107C10',unit:'Personāla nod.',dt:'Rīkojumi',wait:'Pabeigts'},\n      {no:'ID-2026/041',name:'Iekšējās kārtības noteikumu aktualizācija',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Iekš. dok.',wait:'Saskaņošana (3/4)'},\n    ],\n    favorites: [\n      {no:'LG-2026/078',name:'Pakalpojumu līgums ar SIA \"DataPro\"',status:'Aktīvs',sb:'#DFF6DD',sc:'#107C10',unit:'IT nodaļa',dt:'Līgumi'},\n      {no:'IK-2026/130',name:'MK noteikumu piemērošanas jautājums',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Ien. koresp.'},\n      {no:'RK-2026/025',name:'Rīkojums par komandējumu kārtību',status:'Apstiprināts',sb:'#DFF6DD',sc:'#107C10',unit:'Personāla nod.',dt:'Rīkojumi'},\n      {no:'EK-2026/195',name:'Informācijas pieprasījums VARAM',status:'Nosūtīts',sb:'#DEECF9',sc:'#0078d4',unit:'Finanšu nod.',dt:'Izej. koresp.'},\n      {no:'PR-2026/008',name:'Valdes sēdes protokols Nr. 8',status:'Apstiprināts',sb:'#DFF6DD',sc:'#107C10',unit:'Kanceleja',dt:'Protokoli'},\n      {no:'ID-2026/038',name:'Datu aizsardzības politikas aktualizācija',status:'Procesā',sb:'#FFF4CE',sc:'#986F0B',unit:'Juridiskā nod.',dt:'Iekš. dok.'},\n    ],\n  }\n};\n\nlet currentLang = 'en';\n\nfunction setLang(lang) {\n  currentLang = lang;\n  document.getElementById('btnLV').className = 'lang-btn ' + (lang==='lv'?'active':'inactive');\n  document.getElementById('btnEN').className = 'lang-btn ' + (lang==='en'?'active':'inactive');\n  render();\n}\n\nfunction esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }\n\nfunction render() {\n  const t = T[currentLang];\n  document.getElementById('topTitle').textContent = t.home;\n  document.getElementById('navTitle').innerHTML = esc(t.registers);\n  document.getElementById('navHome').textContent = t.home;\n  document.getElementById('navArchive').textContent = t.archive;\n  document.getElementById('searchTitle').textContent = t.search;\n  document.getElementById('advSearchLink').textContent = t.advSearch;\n  document.getElementById('searchInput').placeholder = t.searchPh;\n  document.getElementById('searchBtn').textContent = t.searchBtn;\n  document.getElementById('createTitle').textContent = t.create;\n  document.getElementById('createBtn').textContent = t.createBtn;\n  document.getElementById('tasksTitle').textContent = t.tasksLbl;\n  document.getElementById('viewAllBtn').textContent = t.viewAll;\n  document.getElementById('processesTitle').textContent = t.processesLbl;\n  document.getElementById('favoritesTitle').textContent = t.favoritesLbl;\n\n  // Nav links\n  const docIcon = '<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#605E5C\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><\u002Fsvg>';\n  document.getElementById('navLinks').innerHTML = t.navItems.map(n =>\n    '<a href=\"#\" class=\"nav-item\" style=\"display:flex;align-items:center;gap:10px;padding:8px 16px 8px 19px;color:#323130;font-size:13px;text-decoration:none;\">' + docIcon + esc(n) + '<\u002Fa>'\n  ).join('');\n\n  // Register select\n  document.getElementById('registerSelect').innerHTML = '<option value=\"\">' + esc(t.selectReg) + '<\u002Foption>' + t.navItems.map(n => '<option>' + esc(n) + '<\u002Foption>').join('');\n\n  // Tasks\n  document.getElementById('tasksHeader').innerHTML = [t.colDocNo,t.colName,t.colType,t.colDocType,t.colDueDate,t.colResp].map(c => '<span>' + esc(c) + '<\u002Fspan>').join('');\n  document.getElementById('tasksBody').innerHTML = t.tasks.map(r =>\n    '<div class=\"row\" style=\"cursor:pointer;display:grid;grid-template-columns:100px 1fr 100px 110px 90px 120px;padding:9px 16px;border-bottom:1px solid #F3F2F1;align-items:center;font-size:13px;\">' +\n    '<span style=\"color:#0078d4;font-weight:600;font-size:12px;\">' + esc(r.no) + '<\u002Fspan>' +\n    '<span style=\"font-weight:500;\">' + esc(r.name) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.type) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.dt) + '<\u002Fspan>' +\n    '<span style=\"font-weight:600;font-size:12px;color:' + r.dc + ';\">' + esc(r.due) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.resp) + '<\u002Fspan><\u002Fdiv>'\n  ).join('');\n\n  // Processes\n  document.getElementById('processesHeader').innerHTML = [t.colDocNo,t.colDocSet,t.colStatus,t.colUnit,t.colDocType,t.colWaiting].map(c => '<span>' + esc(c) + '<\u002Fspan>').join('');\n  document.getElementById('processesBody').innerHTML = t.processes.map(r =>\n    '<div class=\"row\" style=\"cursor:pointer;display:grid;grid-template-columns:100px 1fr 120px 120px 110px 130px;padding:9px 16px;border-bottom:1px solid #F3F2F1;align-items:center;font-size:13px;\">' +\n    '<span style=\"color:#0078d4;font-weight:600;font-size:12px;\">' + esc(r.no) + '<\u002Fspan>' +\n    '<span style=\"font-weight:500;\">' + esc(r.name) + '<\u002Fspan>' +\n    '<span><span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:600;background:' + r.sb + ';color:' + r.sc + ';\">' + esc(r.status) + '<\u002Fspan><\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.unit) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.dt) + '<\u002Fspan>' +\n    '<span style=\"color:#A19F9D;font-size:12px;\">' + esc(r.wait) + '<\u002Fspan><\u002Fdiv>'\n  ).join('');\n\n  // Favorites\n  document.getElementById('favoritesHeader').innerHTML = [t.colDocNo,t.colDocSet,t.colStatus,t.colUnit,t.colDocType,''].map(c => '<span>' + esc(c) + '<\u002Fspan>').join('');\n  const star = '<svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\"><polygon points=\"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2\"/><\u002Fsvg>';\n  document.getElementById('favoritesBody').innerHTML = t.favorites.map(r =>\n    '<div class=\"row\" style=\"cursor:pointer;display:grid;grid-template-columns:100px 1fr 120px 130px 110px 36px;padding:9px 16px;border-bottom:1px solid #F3F2F1;align-items:center;font-size:13px;\">' +\n    '<span style=\"color:#0078d4;font-weight:600;font-size:12px;\">' + esc(r.no) + '<\u002Fspan>' +\n    '<span style=\"font-weight:500;\">' + esc(r.name) + '<\u002Fspan>' +\n    '<span><span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:2px;font-size:11px;font-weight:600;background:' + r.sb + ';color:' + r.sc + ';\">' + esc(r.status) + '<\u002Fspan><\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.unit) + '<\u002Fspan>' +\n    '<span style=\"color:#605E5C;font-size:12px;\">' + esc(r.dt) + '<\u002Fspan>' +\n    '<span style=\"color:#FFB900;display:grid;place-items:center;\">' + star + '<\u002Fspan><\u002Fdiv>'\n  ).join('');\n}\n\nrender();\n<\u002Fscript>\n\n\n<\u002Fbody><\u002Fhtml>"
   </script>
 </body>
+
 </html>
