@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>DVS - Search Page</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0078d4; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #0078d4; z-index: 9999; }
+    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
+    #__bundler_placeholder { color: #999; font-size: 14px; }
+  </style>
+  <noscript>
+    <style>#__bundler_loading { display: none; }</style>
+    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+      This page requires JavaScript to display.
+    </div>
+  </noscript>
+</head>
+<body>
+  <div id="__bundler_thumbnail">
+  <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+    <rect width="200" height="140" fill="#0078d4"></rect>
+    <rect x="10" y="10" width="180" height="20" rx="2" fill="rgba(255,255,255,0.3)"></rect>
+    <rect x="10" y="38" width="180" height="14" rx="2" fill="rgba(255,255,255,0.2)"></rect>
+    <rect x="10" y="58" width="50" height="72" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+    <rect x="66" y="58" width="124" height="20" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+    <rect x="66" y="82" width="124" height="20" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+    <rect x="66" y="106" width="124" height="20" rx="2" fill="rgba(255,255,255,0.15)"></rect>
+    <circle cx="100" cy="80" r="12" fill="rgba(255,255,255,0.25)"></circle>
+    <text x="100" y="84" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="sans-serif">🔍</text>
+  </svg>
+</div>
+  <div id="__bundler_loading">Unpacking...</div>
+
+  <script>
+    
+document.addEventListener('DOMContentLoaded', async function() {
+  const loading = document.getElementById('__bundler_loading');
+  function setStatus(msg) { if (loading) loading.textContent = msg; }
+
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    var p = document.body || document.documentElement;
+    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+    d.id = '__bundler_err';
+    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+      '[bundle] ' + (e.message || e.type) +
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+  }, true);
+
+  try {
+    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+    const templateEl = document.querySelector('script[type="__bundler/template"]');
+    if (!manifestEl || !templateEl) {
+      setStatus('Error: missing bundle data');
+      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+      return;
+    }
+
+    const manifest = JSON.parse(manifestEl.textContent);
+    let template = JSON.parse(templateEl.textContent);
+
+    const uuids = Object.keys(manifest);
+    setStatus('Unpacking ' + uuids.length + ' assets...');
+
+    const blobUrls = {};
+    await Promise.all(uuids.map(async (uuid) => {
+      const entry = manifest[uuid];
+      try {
+        const binaryStr = atob(entry.data);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+        let finalBytes = bytes;
+        if (entry.compressed) {
+          if (typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(bytes);
+            writer.close();
+            const chunks = [];
+            let totalLen = 0;
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              totalLen += value.length;
+            }
+            finalBytes = new Uint8Array(totalLen);
+            let offset = 0;
+            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+          } else {
+            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+          }
+        }
+
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+      } catch (err) {
+        console.error('Failed to decode asset ' + uuid + ':', err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+      }
+    }));
+
+    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    const resourceMap = {};
+    for (const entry of extResources) {
+      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+    }
+
+    setStatus('Rendering...');
+    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    const resourceScript = '<script>window.__resources = ' +
+      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+      ';</' + 'script>';
+    // Inject after <head> so the DOCTYPE stays first; prepending the script
+    // would push the parser into quirks mode. DOMParser always emits a <head>
+    // (synthesizing one if the source HTML omitted it) but may carry
+    // attributes through, so match the full opening tag. slice() rather than
+    // replace() keeps us clear of $-pattern substitution in resourceScript.
+    const headOpen = template.match(/<head[^>]*>/i);
+    if (headOpen) {
+      const i = headOpen.index + headOpen[0].length;
+      template = template.slice(0, i) + resourceScript + template.slice(i);
+    }
+
+    // Parse the template and swap the root element. Scripts inserted via
+    // DOMParser/replaceWith are inert per spec — re-create each with
+    // createElement so they execute, awaiting onload for src scripts to
+    // preserve ordering (React before ReactDOM before Babel before text/babel).
+    const doc = new DOMParser().parseFromString(template, 'text/html');
+    document.documentElement.replaceWith(doc.documentElement);
+    const dead = Array.from(document.scripts);
+    for (const old of dead) {
+      const s = document.createElement('script');
+      for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.textContent = old.textContent;
+      // text/babel scripts with a src: fetch and inline. transformScriptTags
+      // does XHR against the src, but blob:null/ from a file:// origin is
+      // silently dropped. Inlining makes it a plain inline babel script,
+      // which transformScriptTags handles unconditionally.
+      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+        const r = await fetch(s.src);
+        s.textContent = await r.text();
+        s.removeAttribute('src');
+      }
+      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      old.replaceWith(s);
+      if (p) await p;
+    }
+    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+    // which fired before we swapped the document. Trigger manually if present.
+    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+      window.Babel.transformScriptTags();
+    }
+  } catch (err) {
+    setStatus('Error unpacking: ' + err.message);
+    console.error('Bundle unpack error:', err);
+  }
+});
+
+  </script>
+
+  <script type="__bundler/manifest">
+{}
+  </script>
+
+  <script type="__bundler/ext_resources">
+[]
+  </script>
+
+  <script type="__bundler/template">
+"<!DOCTYPE html>\n<html lang=\"en\"><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>DVS - Search Page<\u002Ftitle>\n<style>\n  html, body { margin: 0; padding: 0; }\n  body {\n    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;\n    color: #323130;\n    background: #FAF9F8;\n    font-size: 14px;\n    line-height: 1.5;\n    -webkit-font-smoothing: antialiased;\n  }\n  a { color: #0078d4; text-decoration: none; }\n  a:hover { color: #106ebe; }\n  input:focus, select:focus { outline: none; border-color: #0078d4 !important; }\n  input[type=\"checkbox\"] { accent-color: #0078d4; width: 15px; height: 15px; cursor: pointer; }\n  .btn-primary:hover { background: #106ebe !important; }\n  .btn-secondary:hover { background: #F3F2F1 !important; }\n  .result-card:hover { border-color: #0078d4 !important; box-shadow: 0 2px 6px rgba(0,120,212,0.08); }\n  .page-btn:hover { background: #F3F2F1; }\n  .lang-btn { padding: 4px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; }\n  .lang-btn.active { background: white; color: #0078d4; }\n  .lang-btn.inactive { background: transparent; color: rgba(255,255,255,0.7); }\n<\u002Fstyle>\n\n\n<\u002Fhead>\n<body>\n\n<!-- TOP BAR -->\n<div style=\"display: flex; align-items: center; height: 48px; background: #0078d4; padding: 0 16px; gap: 12px;\">\n  <div style=\"display: flex; align-items: center; gap: 12px;\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"white\" style=\"opacity: 0.9;\"><rect x=\"1\" y=\"1\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"13\" y=\"1\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"1\" y=\"13\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><rect x=\"13\" y=\"13\" width=\"10\" height=\"10\" rx=\"1\"><\u002Frect><\u002Fsvg>\n    <span style=\"color: white; font-size: 15px; font-weight: 600;\">DVS<\u002Fspan>\n    <span style=\"color: rgba(255,255,255,0.6); font-size: 13px;\">|<\u002Fspan>\n    <span id=\"topTitle\" style=\"color: rgba(255,255,255,0.85); font-size: 13px;\">Search<\u002Fspan>\n  <\u002Fdiv>\n  <div style=\"flex: 1;\"><\u002Fdiv>\n  <div style=\"display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.15); border-radius: 4px; padding: 2px;\">\n    <button class=\"lang-btn inactive\" id=\"btnLV\" onclick=\"setLang('lv')\">LV<\u002Fbutton>\n    <button class=\"lang-btn active\" id=\"btnEN\" onclick=\"setLang('en')\">EN<\u002Fbutton>\n  <\u002Fdiv>\n  <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(255,255,255,0.7)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9\"><\u002Fpath><path d=\"M13.73 21a2 2 0 0 1-3.46 0\"><\u002Fpath><\u002Fsvg>\n  <div style=\"width: 32px; height: 32px; border-radius: 50%; background: #106ebe; display: grid; place-items: center; color: white; font-weight: 600; font-size: 13px;\">JB<\u002Fdiv>\n<\u002Fdiv>\n\n<!-- HEADER -->\n<div style=\"background: white; border-bottom: 1px solid #EDEBE9; padding: 16px 24px;\">\n  <div style=\"display: flex; align-items: center; gap: 16px; max-width: 1200px; margin: 0 auto;\">\n    <a id=\"backLink\" href=\"#\" style=\"display: flex; align-items: center; gap: 8px; color: #323130; font-weight: 600; font-size: 15px; flex-shrink: 0;\">\n      <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m15 18-6-6 6-6\"><\u002Fpath><\u002Fsvg>\n      <span id=\"backLabel\">← Home<\u002Fspan>\n    <\u002Fa>\n    <div style=\"flex: 1; display: flex; gap: 6px;\">\n      <input id=\"searchInput\" type=\"text\" placeholder=\"Enter keywords...\" style=\"flex: 1; height: 40px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 14px; font-size: 14px; font-family: inherit; background: white;\">\n      <button class=\"btn-primary\" style=\"height: 40px; padding: 0 20px; background: #0078d4; color: white; border: none; border-radius: 2px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;\">\n        <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"><\u002Fcircle><path d=\"m21 21-4.3-4.3\"><\u002Fpath><\u002Fsvg>\n        <span id=\"searchBtnLabel\">Search<\u002Fspan>\n      <\u002Fbutton>\n    <\u002Fdiv>\n  <\u002Fdiv>\n<\u002Fdiv>\n\n<!-- BODY -->\n<div style=\"display: flex; max-width: 1200px; margin: 0 auto; min-height: calc(100vh - 48px - 73px);\">\n\n  <!-- LEFT FILTERS -->\n  <aside style=\"width: 260px; flex-shrink: 0; background: white; border-right: 1px solid #EDEBE9; padding: 20px; overflow-y: auto;\">\n    <div id=\"filtersTitle\" style=\"font-weight: 600; font-size: 15px; margin-bottom: 16px;\">Filters<\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"scopeLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Scope<\u002Fdiv>\n      <label style=\"display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; cursor: pointer;\">\n        <input type=\"checkbox\" checked=\"\"> <span id=\"scopeFrameworks\">Frameworks (metadata)<\u002Fspan>\n      <\u002Flabel>\n      <label style=\"display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; cursor: pointer;\">\n        <input type=\"checkbox\" checked=\"\"> <span id=\"scopeDocuments\">Documents (names)<\u002Fspan>\n      <\u002Flabel>\n      <label style=\"display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; cursor: pointer;\">\n        <input type=\"checkbox\"> <span id=\"scopeContent\">Content (inside documents)<\u002Fspan>\n      <\u002Flabel>\n    <\u002Fdiv>\n    <div style=\"height: 1px; background: #EDEBE9; margin-bottom: 18px;\"><\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"docTypeLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Document type<\u002Fdiv>\n      <select id=\"docTypeSelect\" style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; cursor: pointer;\"><\u002Fselect>\n    <\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"yearLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Creation year<\u002Fdiv>\n      <select id=\"yearSelect\" style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; cursor: pointer;\">\n        <option value=\"\" id=\"yearAll\">All<\u002Foption>\n        <option>2026<\u002Foption><option>2025<\u002Foption><option>2024<\u002Foption><option>2023<\u002Foption>\n      <\u002Fselect>\n    <\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"docNoLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Document number<\u002Fdiv>\n      <input id=\"docNoInput\" type=\"text\" placeholder=\"Contains...\" style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; box-sizing: border-box;\">\n    <\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"partnerLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Partner<\u002Fdiv>\n      <input id=\"partnerInput\" type=\"text\" placeholder=\"Search partner...\" style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; box-sizing: border-box;\">\n    <\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"projectLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Project<\u002Fdiv>\n      <input id=\"projectInput\" type=\"text\" placeholder=\"Search project...\" style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; box-sizing: border-box;\">\n    <\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"companyLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Company<\u002Fdiv>\n      <select style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; cursor: pointer;\">\n        <option>CSD<\u002Foption>\n      <\u002Fselect>\n    <\u002Fdiv>\n\n    <div style=\"margin-bottom: 18px;\">\n      <div id=\"responsibleLabel\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px;\">Responsible person<\u002Fdiv>\n      <input id=\"responsibleInput\" type=\"text\" placeholder=\"Search person...\" style=\"width: 100%; height: 34px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 13px; font-family: inherit; background: white; box-sizing: border-box;\">\n    <\u002Fdiv>\n\n    <button id=\"applyBtn\" class=\"btn-primary\" style=\"width: 100%; height: 36px; background: #0078d4; color: white; border: none; border-radius: 2px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 4px;\">Apply filters<\u002Fbutton>\n    <button id=\"clearBtn\" class=\"btn-secondary\" style=\"width: 100%; height: 36px; background: white; color: #323130; border: 1px solid #8A8886; border-radius: 2px; font-size: 13px; font-family: inherit; cursor: pointer; margin-top: 6px;\">Clear filters<\u002Fbutton>\n  <\u002Faside>\n\n  <!-- RESULTS -->\n  <section style=\"flex: 1; padding: 20px 24px; min-width: 0;\">\n    <div style=\"display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;\">\n      <div id=\"showingLabel\" style=\"font-size: 13px; color: #605E5C;\">Showing 1–8 of 172 results<\u002Fdiv>\n      <div style=\"display: flex; align-items: center; gap: 8px;\">\n        <span id=\"sortLabel\" style=\"font-size: 12px; color: #605E5C;\">Sort:<\u002Fspan>\n        <select id=\"sortSelect\" style=\"height: 30px; border: 1px solid #8A8886; border-radius: 2px; padding: 0 8px; font-size: 12px; font-family: inherit; background: white; cursor: pointer;\"><\u002Fselect>\n      <\u002Fdiv>\n    <\u002Fdiv>\n\n    <div id=\"resultsBody\"><\u002Fdiv>\n\n    <!-- Pagination -->\n    <div style=\"display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 20px; padding: 12px 0;\">\n      <button class=\"page-btn\" style=\"width: 32px; height: 32px; border: 1px solid #EDEBE9; border-radius: 2px; background: white; cursor: pointer; display: grid; place-items: center; color: #A19F9D;\">\n        <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m15 18-6-6 6-6\"><\u002Fpath><\u002Fsvg>\n      <\u002Fbutton>\n      <button style=\"width: 32px; height: 32px; border: 1px solid #0078d4; border-radius: 2px; background: #0078d4; color: white; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer;\">1<\u002Fbutton>\n      <button class=\"page-btn\" style=\"width: 32px; height: 32px; border: 1px solid #EDEBE9; border-radius: 2px; background: white; color: #323130; font-size: 13px; font-family: inherit; cursor: pointer;\">2<\u002Fbutton>\n      <button class=\"page-btn\" style=\"width: 32px; height: 32px; border: 1px solid #EDEBE9; border-radius: 2px; background: white; color: #323130; font-size: 13px; font-family: inherit; cursor: pointer;\">3<\u002Fbutton>\n      <span style=\"padding: 0 4px; color: #A19F9D;\">...<\u002Fspan>\n      <button class=\"page-btn\" style=\"width: 32px; height: 32px; border: 1px solid #EDEBE9; border-radius: 2px; background: white; color: #323130; font-size: 13px; font-family: inherit; cursor: pointer;\">12<\u002Fbutton>\n      <button class=\"page-btn\" style=\"width: 32px; height: 32px; border: 1px solid #EDEBE9; border-radius: 2px; background: white; cursor: pointer; display: grid; place-items: center; color: #323130;\">\n        <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 18 6-6-6-6\"><\u002Fpath><\u002Fsvg>\n      <\u002Fbutton>\n    <\u002Fdiv>\n\n    <div style=\"background: #F3F2F1; border-radius: 4px; padding: 14px 16px; margin-top: 8px;\">\n      <div id=\"tipsTitle\" style=\"font-size: 12px; font-weight: 600; color: #605E5C; margin-bottom: 6px;\">Search tips<\u002Fdiv>\n      <div id=\"tipsBody\" style=\"font-size: 12px; color: #605E5C; line-height: 1.7;\"><\u002Fdiv>\n    <\u002Fdiv>\n  <\u002Fsection>\n<\u002Fdiv>\n\n<script>\nconst T = {\n  en: {\n    pageTitle: 'Search', back: '← Home', searchPh: 'Enter keywords...', searchBtn: 'Search',\n    filters: 'Filters', scope: 'Scope', scopeF: 'Frameworks (metadata)', scopeD: 'Documents (names)', scopeC: 'Content (inside documents)',\n    docType: 'Document type', year: 'Creation year', docNo: 'Document number', docNoPh: 'Contains...',\n    partner: 'Partner', partnerPh: 'Search partner...', project: 'Project', projectPh: 'Search project...',\n    company: 'Company', responsible: 'Responsible person', responsiblePh: 'Search person...',\n    apply: 'Apply filters', clear: 'Clear filters', all: 'All',\n    showing: 'Showing 1–8 of 172 results', sort: 'Sort:', newest: 'Newest first', oldest: 'Oldest first',\n    tipsTitle: 'Search tips',\n    tips: '<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">\"...\"<\u002Fspan> exact phrase&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">*<\u002Fspan> wildcard&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">AND<\u002Fspan> both terms&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">OR<\u002Fspan> either term&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">NOT<\u002Fspan> exclude term',\n    docTypes: ['Incoming correspondence','Outgoing correspondence','Contracts','Orders','Internal documents','Protocols'],\n    results: [\n      {t:'TEST received correspondence with a very long name...',p:'SharePoint > Dokumentu vadība > Saņemtā korespondence',m:'Raitis Šantars · Modified 10.12.2025',s:'Application regarding cooperation opportunities and information exchange between institutions...',ib:'#FFF4CE',ic:'#986F0B',tl:'Inc. corr.',tb:'#FFF4CE',tc:'#986F0B'},\n      {t:'Long name with diacritics, very long name, pa...',p:'SharePoint > Dokumentu vadība > IPPA supraadministrators',m:'Joanna Katrina Andruškeviča · Verified 16.12.2025',s:'Application regarding document information for institutions...',ib:'#DEECF9',ic:'#0078d4',tl:'Contracts',tb:'#DEECF9',tc:'#0078d4'},\n      {t:'Long name with diacritics, very long name...',p:'SharePoint > Dokumentu vadība > Saņemtā korespondence',m:'Rūdis Šantars · Modified 19.01.2026',s:'Application and cooperation framework information for institutions...',ib:'#FFF4CE',ic:'#986F0B',tl:'Inc. corr.',tb:'#FFF4CE',tc:'#986F0B'},\n      {t:'Lease agreement No. LG-2026/091 with AS \"Rīgas nami\"',p:'SharePoint > Dokumentu vadība > Līgumi',m:'M. Ozoliņš · Created 15.03.2026',s:'',ib:'#DEECF9',ic:'#0078d4',tl:'Contracts',tb:'#DEECF9',tc:'#0078d4'},\n      {t:'Order on working time record procedure',p:'SharePoint > Dokumentu vadība > Rīkojumi',m:'J. Bērziņš · Created 22.02.2026',s:'',ib:'#DFF6DD',ic:'#107C10',tl:'Orders',tb:'#DFF6DD',tc:'#107C10'},\n      {t:'Service agreement with SIA \"DataPro\" for IT infrastructure',p:'SharePoint > Dokumentu vadība > Līgumi',m:'A. Kalniņa · Created 08.01.2026',s:'IT infrastructure maintenance and support service agreement...',ib:'#DEECF9',ic:'#0078d4',tl:'Contracts',tb:'#DEECF9',tc:'#0078d4'},\n      {t:'Board meeting protocol No. 8',p:'SharePoint > Dokumentu vadība > Protokoli',m:'D. Vītoliņš · Created 05.04.2026',s:'',ib:'#E8DAEF',ic:'#6B3FA0',tl:'Protocols',tb:'#E8DAEF',tc:'#6B3FA0'},\n      {t:'Internal rules update 2026',p:'SharePoint > Dokumentu vadība > Iekšējie dokumenti',m:'I. Liepiņa · Created 12.05.2026',s:'Updated internal rules in accordance with new regulatory acts...',ib:'#F3F2F1',ic:'#605E5C',tl:'Int. doc.',tb:'#F3F2F1',tc:'#605E5C'},\n    ],\n  },\n  lv: {\n    pageTitle: 'Meklēšana', back: '← Sākumlapa', searchPh: 'Ievadiet atslēgvārdus...', searchBtn: 'Meklēt',\n    filters: 'Filtri', scope: 'Tvērums', scopeF: 'Ietvari (metadati)', scopeD: 'Dokumenti (nosaukumi)', scopeC: 'Saturs (dokumentu iekšienē)',\n    docType: 'Dokumenta veids', year: 'Izveides datums (gads)', docNo: 'Dokumenta numurs', docNoPh: 'Satur...',\n    partner: 'Partneris', partnerPh: 'Meklēt partneri...', project: 'Projekts', projectPh: 'Meklēt projektu...',\n    company: 'Uzņēmums', responsible: 'Atbildīgā persona', responsiblePh: 'Meklēt personu...',\n    apply: 'Piemērot filtrus', clear: 'Notīrīt filtrus', all: 'Visi',\n    showing: 'Rāda 1–8 no 172 rezultātiem', sort: 'Kārtošana:', newest: 'Jaunākie vispirms', oldest: 'Vecākie vispirms',\n    tipsTitle: 'Meklēšanas padomi',\n    tips: '<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">\"...\"<\u002Fspan> precīza frāze&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">*<\u002Fspan> aizstājējzīme&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">AND<\u002Fspan> abi termini&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">OR<\u002Fspan> jebkurš termins&nbsp;&nbsp;<span style=\"font-family:monospace;background:#EDEBE9;padding:1px 5px;border-radius:2px;\">NOT<\u002Fspan> izslēgt terminu',\n    docTypes: ['Ienākošā korespondence','Izejošā korespondence','Līgumi','Rīkojumi','Iekšējie dokumenti','Protokoli'],\n    results: [\n      {t:'TESTA saņemtā korespondence ar garu nosaukumu, ļoti garu nosaukumu...',p:'SharePoint > Dokumentu vadība > Saņemtā korespondence',m:'Raitis Šantars · Mainīts 10.12.2025',s:'Iesniegums par sadarbības iespējām un informācijas apmaiņu starp iestādēm...',ib:'#FFF4CE',ic:'#986F0B',tl:'Ien. koresp.',tb:'#FFF4CE',tc:'#986F0B'},\n      {t:'Garš nosaukums ar garumzīmēm, ļoti garš nosaukums, pa...',p:'SharePoint > Dokumentu vadība > IPPA supraadministrators',m:'Joanna Katrina Andruškeviča · Verificēts 16.12.2025',s:'Iesniegums par sāpirātu bodiju informāciju iestādēm un sagatavotā dokumenta informācija...',ib:'#DEECF9',ic:'#0078d4',tl:'Līgumi',tb:'#DEECF9',tc:'#0078d4'},\n      {t:'Garš nosaukums ar garumzīmēm, ļoti garš nosaukums, pa...',p:'SharePoint > Dokumentu vadība > Saņemtā korespondence',m:'Rūdis Šantars · Mainīts 19.01.2026',s:'Iesniegums un sadarbības ietvara informācija iestādēm noslēpumtibas informācija...',ib:'#FFF4CE',ic:'#986F0B',tl:'Ien. koresp.',tb:'#FFF4CE',tc:'#986F0B'},\n      {t:'Nomas līgums Nr. LG-2026/091 ar AS \"Rīgas nami\"',p:'SharePoint > Dokumentu vadība > Līgumi',m:'M. Ozoliņš · Izveidots 15.03.2026',s:'',ib:'#DEECF9',ic:'#0078d4',tl:'Līgumi',tb:'#DEECF9',tc:'#0078d4'},\n      {t:'Rīkojums par darba laika uzskaites kārtību',p:'SharePoint > Dokumentu vadība > Rīkojumi',m:'J. Bērziņš · Izveidots 22.02.2026',s:'',ib:'#DFF6DD',ic:'#107C10',tl:'Rīkojumi',tb:'#DFF6DD',tc:'#107C10'},\n      {t:'Pakalpojumu līgums ar SIA \"DataPro\" par IT infrastruktūru',p:'SharePoint > Dokumentu vadība > Līgumi',m:'A. Kalniņa · Izveidots 08.01.2026',s:'IT infrastruktūras uzturēšanas un atbalsta pakalpojumu līgums...',ib:'#DEECF9',ic:'#0078d4',tl:'Līgumi',tb:'#DEECF9',tc:'#0078d4'},\n      {t:'Valdes sēdes protokols Nr. 8',p:'SharePoint > Dokumentu vadība > Protokoli',m:'D. Vītoliņš · Izveidots 05.04.2026',s:'',ib:'#E8DAEF',ic:'#6B3FA0',tl:'Protokoli',tb:'#E8DAEF',tc:'#6B3FA0'},\n      {t:'Iekšējās kārtības noteikumu aktualizācija 2026',p:'SharePoint > Dokumentu vadība > Iekšējie dokumenti',m:'I. Liepiņa · Izveidots 12.05.2026',s:'Aktualizēti iekšējās kārtības noteikumi saskaņā ar jaunajiem normatīvajiem aktiem...',ib:'#F3F2F1',ic:'#605E5C',tl:'Iekš. dok.',tb:'#F3F2F1',tc:'#605E5C'},\n    ],\n  }\n};\n\nlet currentLang = 'en';\nfunction esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}\n\nfunction setLang(lang){\n  currentLang=lang;\n  document.getElementById('btnLV').className='lang-btn '+(lang==='lv'?'active':'inactive');\n  document.getElementById('btnEN').className='lang-btn '+(lang==='en'?'active':'inactive');\n  render();\n}\n\nfunction render(){\n  const t=T[currentLang];\n  document.getElementById('topTitle').textContent=t.pageTitle;\n  document.getElementById('backLabel').textContent=t.back;\n  document.getElementById('searchInput').placeholder=t.searchPh;\n  document.getElementById('searchBtnLabel').textContent=t.searchBtn;\n  document.getElementById('filtersTitle').textContent=t.filters;\n  document.getElementById('scopeLabel').textContent=t.scope;\n  document.getElementById('scopeFrameworks').textContent=t.scopeF;\n  document.getElementById('scopeDocuments').textContent=t.scopeD;\n  document.getElementById('scopeContent').textContent=t.scopeC;\n  document.getElementById('docTypeLabel').textContent=t.docType;\n  document.getElementById('yearLabel').textContent=t.year;\n  document.getElementById('yearAll').textContent=t.all;\n  document.getElementById('docNoLabel').textContent=t.docNo;\n  document.getElementById('docNoInput').placeholder=t.docNoPh;\n  document.getElementById('partnerLabel').textContent=t.partner;\n  document.getElementById('partnerInput').placeholder=t.partnerPh;\n  document.getElementById('projectLabel').textContent=t.project;\n  document.getElementById('projectInput').placeholder=t.projectPh;\n  document.getElementById('companyLabel').textContent=t.company;\n  document.getElementById('responsibleLabel').textContent=t.responsible;\n  document.getElementById('responsibleInput').placeholder=t.responsiblePh;\n  document.getElementById('applyBtn').textContent=t.apply;\n  document.getElementById('clearBtn').textContent=t.clear;\n  document.getElementById('showingLabel').textContent=t.showing;\n  document.getElementById('sortLabel').textContent=t.sort;\n  document.getElementById('tipsTitle').textContent=t.tipsTitle;\n  document.getElementById('tipsBody').innerHTML=t.tips;\n\n  // Doc type select\n  document.getElementById('docTypeSelect').innerHTML='<option value=\"\">'+esc(t.all)+'<\u002Foption>'+t.docTypes.map(d=>'<option>'+esc(d)+'<\u002Foption>').join('');\n\n  // Sort select\n  document.getElementById('sortSelect').innerHTML='<option>'+esc(t.newest)+'<\u002Foption><option>'+esc(t.oldest)+'<\u002Foption>';\n\n  // Results\n  const docIcon='<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><\u002Fsvg>';\n  const extIcon='<svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#A19F9D\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex-shrink:0;margin-top:4px;\"><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/><polyline points=\"15 3 21 3 21 9\"/><line x1=\"10\" y1=\"14\" x2=\"21\" y2=\"3\"/><\u002Fsvg>';\n\n  document.getElementById('resultsBody').innerHTML=t.results.map(r=>{\n    const snippetHtml=r.s?'<div style=\"font-size:13px;color:#605E5C;margin-top:6px;line-height:1.5;\">'+esc(r.s)+'<\u002Fdiv>':'';\n    return '<a href=\"#\" class=\"result-card\" style=\"display:flex;gap:14px;padding:14px 16px;background:white;border:1px solid #EDEBE9;border-radius:4px;margin-bottom:8px;text-decoration:none;color:#323130;align-items:flex-start;\">'+\n      '<div style=\"width:36px;height:36px;border-radius:4px;background:'+r.ib+';display:grid;place-items:center;flex-shrink:0;margin-top:2px;\">'+docIcon.replace('stroke-width=\"2\"','stroke=\"'+r.ic+'\" stroke-width=\"2\"')+'<\u002Fdiv>'+\n      '<div style=\"flex:1;min-width:0;\">'+\n        '<div style=\"font-weight:600;font-size:14px;color:#0078d4;display:flex;align-items:center;gap:8px;\">'+esc(r.t)+\n          '<span style=\"font-size:11px;font-weight:600;padding:1px 6px;border-radius:2px;background:'+r.tb+';color:'+r.tc+';white-space:nowrap;\">'+esc(r.tl)+'<\u002Fspan>'+\n        '<\u002Fdiv>'+\n        '<div style=\"font-size:12px;color:#0078d4;margin-top:2px;\">'+esc(r.p)+'<\u002Fdiv>'+\n        '<div style=\"font-size:12px;color:#605E5C;margin-top:4px;\">'+esc(r.m)+'<\u002Fdiv>'+\n        snippetHtml+\n      '<\u002Fdiv>'+extIcon+'<\u002Fa>';\n  }).join('');\n}\n\nrender();\n<\u002Fscript>\n\n\n<\u002Fbody><\u002Fhtml>"
+  </script>
+</body>
+</html>
